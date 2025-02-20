@@ -1,8 +1,10 @@
+import BooksPage from "./views/Book/BooksPage";
+
 export default function App() {
 
   return (
     <>
-      <h1>Book List</h1>
+      <BooksPage />
     </>
   );
 }
