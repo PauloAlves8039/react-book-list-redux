@@ -1,4 +1,4 @@
-export default function Book() {
+export default function Book({book}) {
   return (
     <>
         <div className="book">
