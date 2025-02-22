@@ -1,13 +1,21 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Notes from "../../components/Notes/Notes.jsx";
-import { useSelector } from "react-redux";
-import { selectBooks } from "../../store/booksSlice.js";
+import { useSelector, useDispatch } from "react-redux";
+import { eraseBook, selectBooks } from "../../store/booksSlice.js";
 
 export default function SingleBookPage() {
-    const {id} = useParams();
-    
-    const books = useSelector(selectBooks);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
+    function handleEraseBook(id) {
+        if(confirm("Are you sure you want to erase this book and all notes associated with it?")) {
+            dispatch(eraseBook(id));
+            navigate("/");
+        }
+    }
+    
+    const {id} = useParams();
+    const books = useSelector(selectBooks);
     const book = books.filter(book => book.id == id)[0];
 
     return (
@@ -18,7 +26,7 @@ export default function SingleBookPage() {
                         ← Back to Books
                     </button>
                 </Link>
-                
+
                 <div className="single-book">
                     <div className="book-cover">
                         <img src={book.cover} />
@@ -32,7 +40,7 @@ export default function SingleBookPage() {
                             <input type="checkbox" defaultChecked={book.isRead} />
                             <label>{book.isRead ? "Already Read It" : "Haven't Read it yet"}</label>
                         </div>
-                        <div className="erase-book">
+                        <div onClick={() => handleEraseBook(book.id)} className="erase-book">
                             Erase book
                         </div>
                     </div>
