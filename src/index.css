@@ -423,6 +423,12 @@ table tr th {
   margin-bottom: 12px;
 }
 
+.checkId {
+  color: var(--danger-color1);
+  font-weight: 500;
+  margin-top: 10px;
+}
+
 @media (max-width: 768px) {
   .books-list {
     grid-template-columns: 1fr 1fr;
