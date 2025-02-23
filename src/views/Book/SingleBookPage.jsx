@@ -1,7 +1,7 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Notes from "../../components/Notes/Notes.jsx";
 import { useSelector, useDispatch } from "react-redux";
-import { eraseBook, selectBooks } from "../../store/booksSlice.js";
+import { selectBooks, eraseBook, toggleRead } from "../../store/booksSlice.js";
 
 export default function SingleBookPage() {
     const dispatch = useDispatch();
