@@ -1,13 +1,30 @@
 import Header from "../../components/Header/Header.jsx";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addBook } from "../../store/booksSlice.js";
 
 export default function AddBookPage() {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     function handleAddBook(e) {
-        e.preventDefault;
-        alert("Book created successfully!");
-        navigate("/");
+        e.preventDefault()
+
+        const newBook = {
+            title: document.querySelector("input[name=title]").value,
+            cover: document.querySelector("input[name=cover]").value,
+            isRead: false,
+            author: document.querySelector("input[name=author]").value,
+            synopsis: document.querySelector("textarea[name=synopsis]").value
+        }
+
+        if (newBook.title && newBook.cover && newBook.author) {
+            dispatch(addBook(newBook));
+            alert("Book created successfully!");
+            navigate("/");
+        }else {
+            alert("Please fill the mandatory fields.");
+        }
     }
 
     const pageTitle = "Add Book";
@@ -34,7 +51,7 @@ export default function AddBookPage() {
                     </div>
 
                     <div className="form-control">
-                        <label>Synopsis *</label>
+                        <label>Synopsis</label>
                         <textarea
                             type="text" name="synopsis" placeholder="Add a synopsis..." />
                     </div>
