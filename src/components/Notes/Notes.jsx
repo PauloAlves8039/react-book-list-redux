@@ -1,25 +1,9 @@
-export default function Notes() {
-    let notes = [
-        {
-            id: 1,
-            book_id: 1,
-            title: "Page 18 - On Europe's Decline",
-            text: "The leading states of the European Union, and in particular of the eurozone, were dogged by a growing sense of decline. Their production systems and their societies that were said to be in decline, rather than Europe as a whole."
-        },
-        {
-            id: 2,
-            book_id: 1,
-            title: "Page 55 - Treaty on Friendship and Cooperation",
-            text: "The Portuguese and Spanish Governments signed the Treaty on Friendship and Cooperation at the 32nd Luso-Spanish Summit held in Trujillo in October 2021. This followed on from the commitment undertaken at the Guarda Summit in October 2020."
-        },
-        {
-            id: 3,
-            book_id: 2,
-            title: "Page 61 - On Mesopotamia",
-            text: "Jane R. McIntosh wrote the first general introduction to Mesopotamia that covers all four of the area's major ancient civilizations―Sumer, Akkad, Assyria, and Babylonia."
-        }
+import { useSelector } from "react-redux";
+import { selectNotes } from "../../store/notesSlice";
 
-    ];
+export default function Notes({bookId}) {
+    
+    const notes = useSelector(selectNotes).filter(note => note.book_id == bookId);
 
     return (
         <>
@@ -27,7 +11,8 @@ export default function Notes() {
 
                 <h2>Reader's Notes</h2>
 
-                <div className="notes">
+                {notes.length ?
+                    <div className="notes">
                     {notes.map(note =>
                         <div key={note.id} className="note">
                             <div className="erase-note">Erase note</div>
@@ -35,8 +20,10 @@ export default function Notes() {
                             <p>{note.text}</p>
                         </div>
                     )}
-                </div>
-
+                </div> :
+                <p>This books doesn't have notes yet. Use the form below to add a note.</p>
+                }
+                
                 <details>
                     <summary>Add a note</summary>
                     <form className="add-note">

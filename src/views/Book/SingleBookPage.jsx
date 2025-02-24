@@ -48,7 +48,8 @@ export default function SingleBookPage() {
                             </div>
                         </div>
                     </div>
-                    <Notes />
+
+                    <Notes bookId={id} />
                 </div> : 
                     <div className="checkId">
                         <p>Book not found. Click the button above to go back to the list of books.</p>
