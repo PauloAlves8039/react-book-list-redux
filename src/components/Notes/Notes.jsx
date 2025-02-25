@@ -1,7 +1,14 @@
-import { useSelector } from "react-redux";
-import { selectNotes } from "../../store/notesSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { selectNotes, eraseNote } from "../../store/notesSlice";
 
 export default function Notes({bookId}) {
+    const dispatch = useDispatch();
+    
+    function handleEraseNote(id) {
+        if (confirm("Are you sure you want to erase this note?")) {
+            dispatch(eraseNote(id));
+        }
+    }
     
     const notes = useSelector(selectNotes).filter(note => note.book_id == bookId);
 
@@ -15,7 +22,7 @@ export default function Notes({bookId}) {
                     <div className="notes">
                     {notes.map(note =>
                         <div key={note.id} className="note">
-                            <div className="erase-note">Erase note</div>
+                            <div onClick={() => handleEraseNote(note.id)} className="erase-note">Erase note</div>
                             <h3>{note.title}</h3>
                             <p>{note.text}</p>
                         </div>
