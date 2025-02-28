@@ -1,12 +1,36 @@
 import FullPageLoader from "../../components/Loader/FullPageLoader.jsx";
 import { useState } from "react";
 import { auth } from "../../firebase/config.js";
+import { 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail,
+    onAuthStateChanged
+  } from "firebase/auth";
 
 export default function LoginPage() {
     const [isLoading, setIsLoading] = useState(true);
-    const [loginType, setLoginType] = useState('login');
+    const [loginType, setLoginType] = useState("login");
+    const [userCredentials, setUserCredentials] = useState({});
+  const [error, setError] = useState("");
 
     console.log(auth);
+
+    function handleCredentials(e) {
+        setUserCredentials({ ...userCredentials, [e.target.name]: e.target.value });
+    }
+
+    function handleSignup(e) {
+        e.preventDefault();
+        setError("");
+        createUserWithEmailAndPassword(auth, userCredentials.email, userCredentials.password)
+            .then((userCredential) => {
+                dispatch(setUser({ id: userCredential.user.uid, email: userCredential.user.email }));
+            })
+            .catch((error) => {
+                setError(error.message);
+            });
+    }
 
     return (
         <>
@@ -32,11 +56,11 @@ export default function LoginPage() {
                     <form className="add-form login">
                         <div className="form-control">
                             <label>Email *</label>
-                            <input type="text" name="email" placeholder="Enter your email" />
+                            <input onChange={(e) => {handleCredentials(e)}} type="text" name="email" placeholder="Enter your email" />
                         </div>
                         <div className="form-control">
                             <label>Password *</label>
-                            <input type="password" name="password" placeholder="Enter your password" />
+                            <input onChange={(e) => {handleCredentials(e)}} type="password" name="password" placeholder="Enter your password" />
                         </div>
                         {
                             loginType == "login" ?
