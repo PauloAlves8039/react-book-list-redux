@@ -12,7 +12,7 @@ export default function LoginPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [loginType, setLoginType] = useState("login");
     const [userCredentials, setUserCredentials] = useState({});
-  const [error, setError] = useState("");
+    const [error, setError] = useState("");
 
     console.log(auth);
 
@@ -69,6 +69,12 @@ export default function LoginPage() {
                                 <button className="active btn btn-block">Sign Up</button>
                         }
 
+                        {
+                            error &&
+                            <div className="error">
+                                {error}
+                            </div>
+                        }
                         <p className="forgot-password">Forgot Password?</p>
 
                     </form>
