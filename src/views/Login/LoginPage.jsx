@@ -32,6 +32,25 @@ export default function LoginPage() {
             });
     }
 
+    function handleLogin(e) {
+        e.preventDefault();
+        setError("");
+
+        signInWithEmailAndPassword(auth, userCredentials.email, userCredentials.password)
+            .then((userCredential) => {
+                dispatch(setUser({ id: userCredential.user.uid, email: userCredential.user.email }));
+            })
+            .catch((error) => {
+                setError(error.message);
+            });
+    }
+
+    function handlePasswordReset() {
+        const email = prompt("Please enter your email");
+        sendPasswordResetEmail(auth, email);
+        alert("Email sent! Check your inbox for password reset instructions.");
+    }
+
     return (
         <>
             {isLoading && <FullPageLoader></FullPageLoader>}
@@ -64,9 +83,9 @@ export default function LoginPage() {
                         </div>
                         {
                             loginType == "login" ?
-                                <button className="active btn btn-block">Login</button>
+                                <button onClick={(e)=>{handleLogin(e)}} className="active btn btn-block">Login</button>
                                 :
-                                <button className="active btn btn-block">Sign Up</button>
+                                <button onClick={(e)=>{handleSignup(e)}} className="active btn btn-block">Sign Up</button>
                         }
 
                         {
@@ -75,7 +94,7 @@ export default function LoginPage() {
                                 {error}
                             </div>
                         }
-                        <p className="forgot-password">Forgot Password?</p>
+                        <p onClick={handlePasswordReset} className="forgot-password">Forgot Password?</p>
 
                     </form>
                 </section>
