@@ -7,8 +7,11 @@ import {
     sendPasswordResetEmail,
     onAuthStateChanged
   } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/usersSlice.js";
 
 export default function LoginPage() {
+    const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(true);
     const [loginType, setLoginType] = useState("login");
     const [userCredentials, setUserCredentials] = useState({});
