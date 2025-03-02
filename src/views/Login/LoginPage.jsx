@@ -19,6 +19,16 @@ export default function LoginPage() {
 
     console.log(auth);
 
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            dispatch(setUser({ id: user.uid, email: user.email }));
+        } else {
+            dispatch(setUser(null));
+        }
+        if (isLoading) { setIsLoading(false) };
+
+    });
+
     function handleCredentials(e) {
         setUserCredentials({ ...userCredentials, [e.target.name]: e.target.value });
     }
