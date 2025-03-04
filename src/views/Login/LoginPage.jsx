@@ -17,8 +17,6 @@ export default function LoginPage() {
     const [userCredentials, setUserCredentials] = useState({});
     const [error, setError] = useState("");
 
-    console.log(auth);
-
     onAuthStateChanged(auth, (user) => {
         if (user) {
             dispatch(setUser({ id: user.uid, email: user.email }));
