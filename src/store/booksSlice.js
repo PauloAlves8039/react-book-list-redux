@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db, auth } from "../firebase/config.js";
 
 export const booksSlice = createSlice({
@@ -8,7 +8,6 @@ export const booksSlice = createSlice({
     books: [],
     status: "idle"
   },
-  
   reducers: {
     addBook: (books, action) => {
       let newBook = action.payload;
@@ -18,13 +17,13 @@ export const booksSlice = createSlice({
     eraseBook: (books, action) => {
         return books.filter(book => book.id != action.payload);
     },
-    toggleRead: (books, action) => {
-        books.map(book => {
-          if (book.id == action.payload) {
-            book.isRead = !book.isRead;
-          }
-        });
-    }
+    // toggleRead: (books, action) => {
+    //     books.map(book => {
+    //       if (book.id == action.payload) {
+    //         book.isRead = !book.isRead;
+    //       }
+    //     });
+    // }
   },
   extraReducers(builder) {
     builder.addCase(fecthBooks.pending, (state, action) => {
@@ -38,10 +37,21 @@ export const booksSlice = createSlice({
       state.status = "failed";
       console.log(action.error.message);
     })
+    .addCase(toggleRead.fulfilled, (state, action) => {
+      state.books.map(book => {
+        if (book.id == action.payload) {
+          book.isRead = !book.isRead;
+        }
+      });
+    })
+    .addCase(toggleRead.rejected, (state, action) => {
+      state.status = "failed";
+      console.log(action.error.message);
+    })
   }
 });
 
-export const { addBook, eraseBook, toggleRead } = booksSlice.actions;
+export const { addBook, eraseBook } = booksSlice.actions;
 
 export const selectBooks = state => state.books;
 
@@ -55,4 +65,12 @@ export const fecthBooks = createAsyncThunk("books/fetchBooks", async () => {
     bookList.push({ id: doc.id, ...doc.data() });
   });
   return bookList;
+});
+
+export const toggleRead = createAsyncThunk("books/toggleRead", async (payload) => {
+  const bookRef = doc(db, "books", payload.id);
+  await updateDoc(bookRef, {
+    isRead: !payload.isRead
+  });
+  return payload.id;
 });
