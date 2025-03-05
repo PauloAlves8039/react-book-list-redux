@@ -6,7 +6,9 @@ import {
   getDocs, 
   doc, 
   updateDoc, 
-  deleteDoc } 
+  deleteDoc,
+  addDoc
+ } 
 from "firebase/firestore";
 import { db, auth } from "../firebase/config.js";
 
@@ -21,17 +23,7 @@ export const booksSlice = createSlice({
       let newBook = action.payload;
       newBook.id = books.length ? Math.max(...books.map(book => book.id)) + 1 : 1;
       books.push(newBook);
-    },
-    eraseBook: (books, action) => {
-        return books.filter(book => book.id != action.payload);
-    },
-    // toggleRead: (books, action) => {
-    //     books.map(book => {
-    //       if (book.id == action.payload) {
-    //         book.isRead = !book.isRead;
-    //       }
-    //     });
-    // }
+    }
   },
   extraReducers(builder) {
     builder.addCase(fecthBooks.pending, (state, action) => {
@@ -57,17 +49,22 @@ export const booksSlice = createSlice({
       console.log(action.error.message);
     })
     .addCase(eraseBook.fulfilled, (state, action) => {
-      console.log("fulfilled", action.payload);
       state.books = state.books.filter(book => book.id != action.payload);
     })
     .addCase(eraseBook.rejected, (state, action) => {
       state.status = "failed";
       console.log(action.error.message);
     })
+    .addCase(addBook.fulfilled, (state, action) => {
+      console.log("fulfilled", action.payload);
+      state.books.push(action.payload);
+    })
+    .addCase(addBook.rejected, (state, action) => {
+      state.status = "failed";
+      console.log(action.error.message);
+    })
   }
 });
-
-export const { addBook } = booksSlice.actions;
 
 export const selectBooks = state => state.books;
 
@@ -94,4 +91,12 @@ export const toggleRead = createAsyncThunk("books/toggleRead", async (payload) =
 export const eraseBook = createAsyncThunk("books/eraseBook", async (payload) => {
   await deleteDoc(doc(db, "books", payload));
   return payload;
+});
+
+export const addBook = createAsyncThunk("books/addBook", async (payload) => {
+  let newBook = payload;
+  newBook.user_id = auth.currentUser.uid;
+  const docRef = await addDoc(collection(db, "books"), newBook);
+  newBook.id = docRef.id;
+  return newBook;
 });
