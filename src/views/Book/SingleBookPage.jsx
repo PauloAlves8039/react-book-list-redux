@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { eraseBook, toggleRead } from "../../store/booksSlice.js";
 import { doc, getDoc } from "firebase/firestore";
-import {db} from "../../firebase/config.js";
+import { db } from "../../firebase/config.js";
 import Notes from "../../components/Notes/Notes.jsx";
 
 export default function SingleBookPage() {

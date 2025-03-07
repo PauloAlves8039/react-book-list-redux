@@ -1,8 +1,13 @@
 import { useSelector, useDispatch } from "react-redux";
 import { selectNotes, eraseNote, addNote } from "../../store/notesSlice";
+import { useEffect, useState } from "react";
+import { db } from "../../firebase/config.js";
+import { collection, query, where, getDocs, doc, deleteDoc, addDoc } from "firebase/firestore";
 
 export default function Notes({bookId}) {
     const dispatch = useDispatch();
+    const [notes, setNotes] = useState("");
+    const [fetchStatus, setFetchStatus] = useState("idle");
     
     function handleEraseNote(id) {
         if (confirm("Are you sure you want to erase this note?")) {
@@ -27,9 +32,30 @@ export default function Notes({bookId}) {
             alert("Please fill the mandatory fields.");
         }
     }
-    
-    const notes = useSelector(selectNotes).filter(note => note.book_id == bookId);
 
+    const fetchNotes = async (book_id) => {
+
+        try {
+            const search = query(collection(db, "notes"), where("book_id", "==", book_id));
+            const querySnapshot = await getDocs(search);
+            let notesList = [];
+            querySnapshot.forEach((doc) => {
+                notesList.push({ ...doc.data(), id: doc.id });
+            });
+            setNotes(notesList);
+            setFetchStatus("success");
+        } catch (err) {
+            console.log('error', err);
+            setFetchStatus("error");
+        }
+    }
+
+    useEffect(()=>{
+        if(fetchStatus == "idle"){
+          fetchNotes(bookId);
+        }
+      }, []);
+    
     return (
         <>
             <div className="notes-wrapper">
