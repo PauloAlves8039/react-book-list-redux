@@ -9,9 +9,14 @@ export default function Notes({bookId}) {
     const [notes, setNotes] = useState("");
     const [fetchStatus, setFetchStatus] = useState("idle");
     
-    function handleEraseNote(id) {
-        if (confirm("Are you sure you want to erase this note?")) {
-            dispatch(eraseNote(id));
+    const handleEraseNote = async (id) => {
+        if (confirm('Are you sure you want to erase this note?')) {
+            try {
+                await deleteDoc(doc(db, "notes", id));
+                setNotes(notes.filter(note => note.id != id));
+            } catch (error) {
+                alert("Error deleting note");
+            }
         }
     }
 
