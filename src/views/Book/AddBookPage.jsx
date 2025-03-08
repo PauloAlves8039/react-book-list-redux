@@ -6,6 +6,7 @@ import { addBook } from "../../store/booksSlice.js";
 export default function AddBookPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const pageTitle = "Add Book";
 
     function handleAddBook(e) {
         e.preventDefault()
@@ -31,8 +32,6 @@ export default function AddBookPage() {
             alert("Please fill the mandatory fields.");
         }
     }
-
-    const pageTitle = "Add Book";
 
     return (
         <>

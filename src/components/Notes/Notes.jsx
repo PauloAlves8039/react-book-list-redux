@@ -1,11 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
-import { selectNotes, eraseNote, addNote } from "../../store/notesSlice";
 import { useEffect, useState } from "react";
 import { db } from "../../firebase/config.js";
 import { collection, query, where, getDocs, doc, deleteDoc, addDoc } from "firebase/firestore";
 
 export default function Notes({bookId}) {
-    const dispatch = useDispatch();
     const [notes, setNotes] = useState("");
     const [fetchStatus, setFetchStatus] = useState("idle");
     
