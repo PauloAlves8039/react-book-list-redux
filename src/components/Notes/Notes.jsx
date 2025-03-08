@@ -20,7 +20,7 @@ export default function Notes({bookId}) {
         }
     }
 
-    function handleAddNote(e) {
+    const handleAddNote = async (e) => {
         e.preventDefault();
 
         const newNote = {
@@ -28,11 +28,19 @@ export default function Notes({bookId}) {
             title: document.querySelector("input[name=title]").value,
             text: document.querySelector("textarea[name=note]").value
         }
-
         if (newNote.title && newNote.text) {
-            dispatch(addNote(newNote));
-            document.querySelector("input[name=title]").value = "";
-            document.querySelector("textarea[name=note]").value = "";
+
+            try {
+                const docRef = await addDoc(collection(db, "notes"), newNote);
+                newNote.id = docRef.id;
+                setNotes([...notes, newNote]);
+                document.querySelector("input[name=title]").value = "";
+                document.querySelector("textarea[name=note]").value = "";
+
+            } catch (error) {
+                alert("Error adding note");
+            }
+
         } else {
             alert("Please fill the mandatory fields.");
         }
@@ -72,7 +80,7 @@ export default function Notes({bookId}) {
                     {notes.map(note =>
                         <div key={note.id} className="note">
                             <div onClick={() => handleEraseNote(note.id)} className="erase-note">Erase note</div>
-                            <h3>{note.title}</h3>
+                            <h3 className="notes-title">{note.title}</h3>
                             <p>{note.text}</p>
                         </div>
                     )}

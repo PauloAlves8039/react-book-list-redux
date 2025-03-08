@@ -16,6 +16,7 @@
   --dark-color5: rgba(0, 0, 0, 0.1);
   --dark-color6: #3E3E3E;
   --info-color1: #0000EE;
+  --info-color2: #4076F5;
   --success-color1: #1CAB47;
   --danger-color1: #FF0000;
   --danger-color2: rgb(232, 93, 65);
@@ -444,6 +445,10 @@
 
   .single-book .book-cover img {
     max-width: 100%;
+  }
+
+  .notes-title {
+    color: var(--info-color2);
   }
 
   .notes-wrapper {
