@@ -1,0 +1,49 @@
+.login-page {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-page h1,
+p {
+    text-align: center;
+}
+
+.login-page p {
+    margin-bottom: 24px;
+}
+
+.login-page .login-type {
+    text-align: center;
+
+}
+
+.login-page .add-form.login {
+    width: 600px;
+    max-width: 100%;
+}
+
+.login-page .add-form .error {
+    text-align: center;
+    color: var(--danger-color1);
+    margin-top: 8px;
+}
+
+.login-page p.forgot-password {
+    margin-top: 12px;
+    color: var(--info-color1);
+    text-decoration: underline;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.login-page.container button.btn.selected {
+    background: var(--dark-color6);
+    color: var(--white-color4);
+}
+
+.login-page.container button.btn.login {
+    background: var(--dark-color6);
+    color: var(--white-color4);
+}

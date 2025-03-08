@@ -9,6 +9,7 @@ import {
   } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/usersSlice.js";
+import "./login.css";
 
 export default function LoginPage() {
     const dispatch = useDispatch();

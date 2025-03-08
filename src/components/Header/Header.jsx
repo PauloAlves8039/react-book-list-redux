@@ -19,7 +19,7 @@ export default function Header({pageTitle}) {
 
     return (
         <>
-            <h1>{pageTitle}</h1>
+            <h1 className="book-title">{pageTitle}</h1>
 
             <div className="header-btns">
                 <NavLink to={"/"}>

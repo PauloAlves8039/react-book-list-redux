@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toggleRead } from "../../store/booksSlice.js";
+import "./book.css";
 
 export default function Book({book}) {
     const dispatch = useDispatch();

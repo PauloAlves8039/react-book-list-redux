@@ -1,3 +1,5 @@
+import "./loader.css";
+
 export default function Loader({ bg }) {
     return (
         <>

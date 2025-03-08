@@ -3,6 +3,7 @@ import Header from "../../components/Header/Header.jsx";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectBooks, fecthBooks } from "../../store/booksSlice.js";
+import "../../components/Book/book.css";
 
 export default function BooksPage() {
     const dispatch = useDispatch();

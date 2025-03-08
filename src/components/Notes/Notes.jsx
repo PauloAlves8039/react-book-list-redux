@@ -1,7 +1,7 @@
-import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { db } from "../../firebase/config.js";
 import { collection, query, where, getDocs, doc, deleteDoc, addDoc } from "firebase/firestore";
+import "./notes.css";
 
 export default function Notes({bookId}) {
     const [notes, setNotes] = useState("");
@@ -71,14 +71,14 @@ export default function Notes({bookId}) {
         <>
             <div className="notes-wrapper">
 
-                <h2>Reader's Notes</h2>
+                <h2 className="notes-title">Reader's Notes</h2>
 
                 {notes.length ?
                     <div className="notes">
                     {notes.map(note =>
                         <div key={note.id} className="note">
                             <div onClick={() => handleEraseNote(note.id)} className="erase-note">Erase note</div>
-                            <h3 className="notes-title">{note.title}</h3>
+                            <h3 className="notes-sub-title">{note.title}</h3>
                             <p>{note.text}</p>
                         </div>
                     )}
