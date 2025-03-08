@@ -2,6 +2,7 @@ import Header from "../../components/Header/Header.jsx";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addBook } from "../../store/booksSlice.js";
+import { toast } from "react-toastify";
 
 export default function AddBookPage() {
     const dispatch = useDispatch();
@@ -22,14 +23,14 @@ export default function AddBookPage() {
         if (newBook.title && newBook.cover && newBook.author) {
             dispatch(addBook(newBook)).then((response) => {
                 if (response.error) {
-                    alert("An error occurred!");
+                    toast.error("An error occurred!");
                 } else {
-                    alert("Book created successfully!");
+                    toast.success("Book created successfully!");
                     navigate("/");
                 }
             });
         }else {
-            alert("Please fill the mandatory fields.");
+            toast.warn("Please fill the mandatory fields.");
         }
     }
 

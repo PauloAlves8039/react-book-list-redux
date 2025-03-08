@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { selectUsers } from "./store/usersSlice.js";
 import { useSelector } from "react-redux";
+import { ToastContainer } from "react-toastify";
 import BooksPage from "./views/Book/BooksPage.jsx";
 import AddBookPage from "./views/Book/AddBookPage.jsx";
 import SingleBookPage from "./views/Book/SingleBookPage.jsx";
@@ -11,6 +12,7 @@ export default function App() {
 
   return (
     <>
+      <ToastContainer autoClose={3000} />
       {
       user.currentUser ? 
       <BrowserRouter>

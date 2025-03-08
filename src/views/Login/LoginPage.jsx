@@ -1,5 +1,5 @@
 import FullPageLoader from "../../components/Loader/FullPageLoader.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { auth } from "../../firebase/config.js";
 import { 
     createUserWithEmailAndPassword, 
@@ -9,6 +9,7 @@ import {
   } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/usersSlice.js";
+import { toast } from "react-toastify";
 import "./login.css";
 
 export default function LoginPage() {
@@ -17,6 +18,27 @@ export default function LoginPage() {
     const [loginType, setLoginType] = useState("login");
     const [userCredentials, setUserCredentials] = useState({});
     const [error, setError] = useState("");
+    const [toastShown, setToastShown] = useState(false);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                dispatch(setUser({ id: user.uid, email: user.email }));
+
+                if (!toastShown) {
+                    setToastShown(true); 
+                }
+            } else {
+                dispatch(setUser(null));
+                setToastShown(false);
+            }
+            if (isLoading) {
+                setIsLoading(false);
+            }
+        });
+
+        return unsubscribe;
+    }, [toastShown, dispatch, isLoading]);
 
     onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -38,9 +60,11 @@ export default function LoginPage() {
         createUserWithEmailAndPassword(auth, userCredentials.email, userCredentials.password)
             .then((userCredential) => {
                 dispatch(setUser({ id: userCredential.user.uid, email: userCredential.user.email }));
+                toast.success("Account created successfully!"); //
             })
             .catch((error) => {
                 setError(error.message);
+                toast.error(`Error: ${error.message}`);
             });
     }
 
@@ -51,16 +75,18 @@ export default function LoginPage() {
         signInWithEmailAndPassword(auth, userCredentials.email, userCredentials.password)
             .then((userCredential) => {
                 dispatch(setUser({ id: userCredential.user.uid, email: userCredential.user.email }));
+                toast.success("Successfully logged in!");
             })
             .catch((error) => {
                 setError(error.message);
+                toast.error(`Error: ${error.message}`);
             });
     }
 
     function handlePasswordReset() {
         const email = prompt("Please enter your email");
         sendPasswordResetEmail(auth, email);
-        alert("Email sent! Check your inbox for password reset instructions.");
+        toast.info("Email sent! Check your inbox for password reset instructions.");
     }
 
     return (

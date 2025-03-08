@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { eraseBook, toggleRead } from "../../store/booksSlice.js";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/config.js";
+import { toast } from "react-toastify";
 import Notes from "../../components/Notes/Notes.jsx";
 import "../../components/Book/book.css";
 
@@ -40,6 +41,7 @@ export default function SingleBookPage() {
       } catch(err) {
         console.log("error", err);
         setFetchStatus("error");
+        toast.error("Error fetching the book.");
       }
     }
   
