@@ -52,6 +52,7 @@
 
 .book-title {
   color: var(--info-color2);
+  text-align: center;
 }
 
 .book .book-title {
@@ -167,6 +168,9 @@
     margin-top: 20px;
   }
 
+  .book .book-cover {
+    height: 100%;
+  }
 }
 
 @media (max-width: 768px) {
@@ -178,5 +182,9 @@
 @media (max-width: 576px) {
   .books-list {
     grid-template-columns: 1fr;
+  }
+
+  .book .book-cover {
+    height: 100%;
   }
 }

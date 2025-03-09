@@ -18,6 +18,7 @@ export default function SingleBookPage() {
     function handleEraseBook(id) {
       if(confirm("Are you sure you want to erase this book and all notes associated with it?")){
         dispatch(eraseBook(id));
+        toast.success("Book removed successfully!");
         navigate("/");
       }
     }
